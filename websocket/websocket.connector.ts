@@ -20,7 +20,6 @@ export class Connector extends WebSocketServer{
           if(url){
             let currentClient: WebSocketData = {
               sender_id: Number(this.extractParamValue(url, 'sender_id')),
-              getter_id: Number(this.extractParamValue(url, 'getter_id')),
               ws: ws
             };
             clients.push(currentClient);
@@ -42,11 +41,11 @@ export class Connector extends WebSocketServer{
             clients.forEach((client) => {
 
               if (client.ws !== currentClient.ws &&
-                client.getter_id === currentClient.sender_id && 
-                currentClient.getter_id === client.sender_id) {
+                _message.getter_id === client.sender_id) {
                 client.ws.send(JSON.stringify(_message));
+                this._database.createMessage(_message.message, currentClient.sender_id, _message.getter_id);
               }
-              this._database.createMessage(_message.message, currentClient.sender_id, currentClient.getter_id);
+              
             });
           } 
         );

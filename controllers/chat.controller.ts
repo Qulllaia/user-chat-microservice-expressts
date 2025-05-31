@@ -17,7 +17,7 @@ export default class ChatController {
         })
     }
 
-    public async getMessages(req: any, res: any){
+    async getMessages(req: any, res: any){
         const {chat_id} = req.body;
         const resp = await this._database.getMessages(chat_id)
         return res.status(200).send({
